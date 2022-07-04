@@ -2,15 +2,18 @@ package com.example.kotlincourseappivanov
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
-import com.example.kotlincourseappivanov.R
+import com.example.kotlincourseappivanov.databinding.ActivityMainBinding
+import com.example.kotlincourseappivanov.view.WeatherFragment
 
 class MainActivity : AppCompatActivity() {
+
+    lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+
 
     }
 }
