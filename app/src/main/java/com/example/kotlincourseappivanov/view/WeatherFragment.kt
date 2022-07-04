@@ -22,7 +22,6 @@ class WeatherFragment: Fragment() {
     ): View {
         binding = WeatherFragmentBinding.inflate(inflater)
         return binding.root
-
     }
 
 
