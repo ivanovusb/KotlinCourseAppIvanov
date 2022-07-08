@@ -42,9 +42,17 @@ class WeatherFragment: Fragment() {
 
     private fun renderData(appState: AppState) {
         when (appState) {
-            is AppState.Error -> {/*TODO() HW*/
+            is AppState.Error -> {
+                binding.cityName.text = "Ошибка загрузки данных"
+                binding.temperatureValue.text = "Ошибка загрузки данных"
+                binding.feelsLikeValue.text = "Ошибка загрузки данных"
+                binding.cityCoordinates.text = "Ошибка загрузки данных"
             }
-            AppState.Loading -> {/*TODO() HW*/
+            AppState.Loading -> {
+                binding.cityName.text = "Загрузка..."
+                binding.temperatureValue.text = "Загрузка..."
+                binding.feelsLikeValue.text = "Загрузка..."
+                binding.cityCoordinates.text = "Загрузка..."
             }
             is AppState.Success -> {
                 val result = appState.weatherData
