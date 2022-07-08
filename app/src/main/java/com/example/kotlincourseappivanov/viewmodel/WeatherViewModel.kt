@@ -1,14 +1,20 @@
 package com.example.kotlincourseappivanov.viewmodel
 
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.kotlincourseappivanov.model.WeatherRepository
 import com.example.kotlincourseappivanov.model.WeatherRepositoryLocal
 import com.example.kotlincourseappivanov.model.WeatherRepositoryRemote
+import java.security.SecureRandom
 
 class WeatherViewModel(private val liveData: MutableLiveData<AppState> = MutableLiveData<AppState>()): ViewModel() {
 
+
+    private fun getRandomState(one: Int = 1, zero: Int = 0): Boolean {
+        val random = SecureRandom()
+        random.setSeed(random.generateSeed(20))
+        return (random.nextInt(one - zero + 1) + zero) == 1
+    }
 
     private lateinit var repository: WeatherRepository
     fun getLiveData(): MutableLiveData<AppState> {
@@ -35,8 +41,6 @@ class WeatherViewModel(private val liveData: MutableLiveData<AppState> = Mutable
     }
 
     private fun isConnection(): Boolean {
-        return false
+        return getRandomState()
     }
-
-
 }
