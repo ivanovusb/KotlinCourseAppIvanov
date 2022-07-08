@@ -1,4 +1,6 @@
-package com.example.kotlincourseappivanov
+package com.example.kotlincourseappivanov.viewmodel
+
+import com.example.kotlincourseappivanov.Weather
 
 sealed class AppState {
     data class Success(val weatherData: Weather): AppState()

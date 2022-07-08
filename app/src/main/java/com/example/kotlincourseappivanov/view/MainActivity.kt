@@ -1,7 +1,8 @@
-package com.example.kotlincourseappivanov
+package com.example.kotlincourseappivanov.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.kotlincourseappivanov.R
 import com.example.kotlincourseappivanov.databinding.ActivityMainBinding
 import com.example.kotlincourseappivanov.view.WeatherFragment
 
@@ -13,7 +14,12 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
+        if (savedInstanceState == null) {
+            supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.container, WeatherFragment.newInstance())
+                .commit()
+        }
 
     }
 }
