@@ -13,11 +13,14 @@ import com.example.kotlincourseappivanov.viewmodel.WeatherViewModel
 
 class WeatherFragment: Fragment() {
 
-    companion object {
-        fun newInstance() = WeatherFragment()
+
+    private var _binding: WeatherFragmentBinding? = null
+    private val binding: WeatherFragmentBinding
+    get() {
+        return _binding!!
     }
 
-    private lateinit var binding: WeatherFragmentBinding
+
     private lateinit var viewModel: WeatherViewModel
 
     override fun onCreateView(
@@ -25,7 +28,7 @@ class WeatherFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = WeatherFragmentBinding.inflate(inflater)
+        _binding = WeatherFragmentBinding.inflate(inflater)
         return binding.root
     }
 
@@ -38,6 +41,11 @@ class WeatherFragment: Fragment() {
             }
         })
         viewModel.sentRequest()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 
     private fun renderData(appState: AppState) {
@@ -64,6 +72,8 @@ class WeatherFragment: Fragment() {
         }
     }
 
-
+    companion object {
+        fun newInstance() = WeatherFragment()
+    }
 
 }
