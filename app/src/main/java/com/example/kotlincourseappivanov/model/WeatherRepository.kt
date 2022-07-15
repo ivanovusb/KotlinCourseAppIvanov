@@ -3,11 +3,11 @@ package com.example.kotlincourseappivanov.model
 import com.example.kotlincourseappivanov.Weather
 
 fun interface RepositorySingle {
-    fun getWeather()
+    fun getWeather(lat: Double, lon: Double): Weather
 }
 
 fun interface RepositoryMulti {
-    fun getListWeather(): List<Weather>
+    fun getListWeather(location: Location): List<Weather>
 }
 
 sealed class Location{

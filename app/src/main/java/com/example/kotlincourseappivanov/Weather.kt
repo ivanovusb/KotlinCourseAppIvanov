@@ -1,6 +1,6 @@
 package com.example.kotlincourseappivanov
 
-data class Weather (val city: City = getDefaultCity(), val temperature: Int, val feelsLike: Int)
+data class Weather (val city: City = getDefaultCity(), val temperature: Int = 20, val feelsLike: Int = 10)
 
 data class City (val name: String, val lat: Double, val lon: Double)
 
