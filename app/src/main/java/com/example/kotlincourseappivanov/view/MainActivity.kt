@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.kotlincourseappivanov.R
 import com.example.kotlincourseappivanov.databinding.ActivityMainBinding
-import com.example.kotlincourseappivanov.view.WeatherFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.container, WeatherFragment.newInstance())
+                .replace(R.id.container, WeatherFragmentDetails.newInstance())
                 .commit()
         }
 

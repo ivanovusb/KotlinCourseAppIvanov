@@ -7,15 +7,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.kotlincourseappivanov.databinding.WeatherFragmentBinding
+import com.example.kotlincourseappivanov.databinding.WeatherFragmentDetailsBinding
 import com.example.kotlincourseappivanov.viewmodel.AppState
 import com.example.kotlincourseappivanov.viewmodel.WeatherViewModel
 
-class WeatherFragment: Fragment() {
+class WeatherFragmentDetails: Fragment() {
 
 
-    private var _binding: WeatherFragmentBinding? = null
-    private val binding: WeatherFragmentBinding
+    private var _binding: WeatherFragmentDetailsBinding? = null
+    private val binding: WeatherFragmentDetailsBinding
     get() {
         return _binding!!
     }
@@ -28,7 +28,7 @@ class WeatherFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = WeatherFragmentBinding.inflate(inflater)
+        _binding = WeatherFragmentDetailsBinding.inflate(inflater)
         return binding.root
     }
 
@@ -73,7 +73,7 @@ class WeatherFragment: Fragment() {
     }
 
     companion object {
-        fun newInstance() = WeatherFragment()
+        fun newInstance() = WeatherFragmentDetails()
     }
 
 }
