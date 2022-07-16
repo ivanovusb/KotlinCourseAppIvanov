@@ -2,21 +2,23 @@ package com.example.kotlincourseappivanov.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.kotlincourseappivanov.model.WeatherRepository
-import com.example.kotlincourseappivanov.model.WeatherRepositoryLocal
-import com.example.kotlincourseappivanov.model.WeatherRepositoryRemote
+import com.example.kotlincourseappivanov.model.*
 import java.security.SecureRandom
 
-class WeatherViewModel(private val liveData: MutableLiveData<AppState> = MutableLiveData<AppState>()): ViewModel() {
+class WeatherViewModel(private val liveData: MutableLiveData<AppState> = MutableLiveData<AppState>()) :
+    ViewModel() {
 
-
+/*
     private fun getRandomState(one: Int = 1, zero: Int = 0): Boolean {
         val random = SecureRandom()
         random.setSeed(random.generateSeed(20))
         return (random.nextInt(one - zero + 1) + zero) == 1
-    }
+    }*/
 
-    private lateinit var repository: WeatherRepository
+    private lateinit var repositorySingle: RepositorySingle
+    private lateinit var repositoryMulti: RepositoryMulti
+
+
     fun getLiveData(): MutableLiveData<AppState> {
         choiceRepository()
         return liveData
@@ -24,23 +26,32 @@ class WeatherViewModel(private val liveData: MutableLiveData<AppState> = Mutable
 
 
     private fun choiceRepository() {
-        repository = if (isConnection()) {
+        repositorySingle = if (isConnection()) {
             WeatherRepositoryRemote()
         } else {
             WeatherRepositoryLocal()
         }
+        repositoryMulti = WeatherRepositoryLocal()
     }
 
-    fun sentRequest() {
+    fun getWeatherListForRussia() {
+        sentRequest(Location.Russia)
+    }
+
+    fun getWeatherListForWorld() {
+        sentRequest(Location.World)
+    }
+
+    fun sentRequest(location: Location) {
         liveData.value = AppState.Loading
-        if (getRandomState()) {
+        if (false) {
             liveData.postValue(AppState.Error(throw IllegalStateException("что то пошло не так!")))
         } else {
-            liveData.postValue(AppState.Success(repository.getWeather(55.755826, 37.128912841208)))
+            liveData.postValue(AppState.SuccessMulti(repositoryMulti.getListWeather(location)))
         }
     }
 
     private fun isConnection(): Boolean {
-        return getRandomState()
+        return false
     }
 }

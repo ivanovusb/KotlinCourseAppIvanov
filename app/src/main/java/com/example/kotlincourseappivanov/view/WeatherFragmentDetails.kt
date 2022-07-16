@@ -62,5 +62,4 @@ class WeatherFragmentDetails : Fragment() {
             return fr
         }
     }
-
 }

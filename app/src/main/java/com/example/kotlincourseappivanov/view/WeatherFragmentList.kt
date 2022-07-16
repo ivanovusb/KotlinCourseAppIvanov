@@ -5,12 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import com.example.kotlincourseappivanov.R
 import com.example.kotlincourseappivanov.Weather
 import com.example.kotlincourseappivanov.databinding.WeatherFragmentListBinding
 import com.example.kotlincourseappivanov.viewmodel.AppState
+import com.example.kotlincourseappivanov.viewmodel.WeatherViewModel
 
-class WeatherFragmentList:Fragment() {
+class WeatherFragmentList : Fragment(), OnItemClick {
 
+    companion object {
+        fun newInstance() = WeatherFragmentList()
+    }
 
     private var _binding: WeatherFragmentListBinding? = null
     private val binding: WeatherFragmentListBinding
@@ -18,6 +25,9 @@ class WeatherFragmentList:Fragment() {
             return _binding!!
         }
 
+    var isRussian = true
+
+    lateinit var viewModel: WeatherViewModel
 
     override fun onDestroy() {
         super.onDestroy()
@@ -36,9 +46,24 @@ class WeatherFragmentList:Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val weather = (arguments?.getParcelable<Weather>(BUNDLE_WEATHER_EXTRA))
-        if (weather != null)
-            renderData(weather)
+        viewModel = ViewModelProvider(this).get(WeatherViewModel::class.java)
+        viewModel.getLiveData().observe(viewLifecycleOwner, object : Observer<AppState> {
+            override fun onChanged(t: AppState) {
+                renderData(t)
+            }
+        })
+
+        binding.weatherListFragmentFAB.setOnClickListener {
+            isRussian = !isRussian
+            if (isRussian) {
+                viewModel.getWeatherListForRussia()
+                binding.weatherListFragmentFAB.setImageResource(R.drawable.ic_russia)
+            } else {
+                viewModel.getWeatherListForWorld()
+                binding.weatherListFragmentFAB.setImageResource(R.drawable.ic_earth)
+            }
+        }
+        viewModel.getWeatherListForRussia()
     }
 
     private fun renderData(appState: AppState) {
@@ -52,22 +77,15 @@ class WeatherFragmentList:Fragment() {
 
             }
             is AppState.SuccessMulti -> {
-                binding.weatherListFragmentRecyclerView.adapter = WeatherListAdapter(appState.weatherList, this)
+                binding.weatherListFragmentRecyclerView.adapter =
+                    WeatherListAdapter(appState.weatherList, this)
             }
         }
     }
 
-    companion object {
-        const val BUNDLE_WEATHER_EXTRA = "asnqwrwqr"
-        fun newInstance(weather: Weather): WeatherFragmentDetails {
-            val bundle = Bundle()
-            bundle.putParcelable(BUNDLE_WEATHER_EXTRA, weather)
-            WeatherFragmentList()
-            val fr = WeatherFragmentDetails()
-            fr.arguments = bundle
-            return fr
-        }
+    override fun onItemClick(weather: Weather) {
+        requireActivity().supportFragmentManager.beginTransaction().hide(this)
+            .add(R.id.container, WeatherFragmentDetails.newInstance(weather)).addToBackStack("")
+            .commit()
     }
-
-
 }
