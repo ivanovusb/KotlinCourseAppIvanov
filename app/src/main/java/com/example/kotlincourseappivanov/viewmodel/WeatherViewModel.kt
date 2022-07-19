@@ -42,10 +42,10 @@ class WeatherViewModel(private val liveData: MutableLiveData<AppState> = Mutable
         sentRequest(Location.World)
     }
 
-    fun sentRequest(location: Location) {
+    private fun sentRequest(location: Location) {
         liveData.value = AppState.Loading
         if (false) {
-            liveData.postValue(AppState.Error(throw IllegalStateException("что то пошло не так!")))
+            liveData.postValue(AppState.Error(IllegalStateException("что то пошло не так!")))
         } else {
             liveData.postValue(AppState.SuccessMulti(repositoryMulti.getListWeather(location)))
         }
