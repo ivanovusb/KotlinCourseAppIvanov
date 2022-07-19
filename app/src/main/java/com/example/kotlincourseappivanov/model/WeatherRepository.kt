@@ -2,7 +2,15 @@ package com.example.kotlincourseappivanov.model
 
 import com.example.kotlincourseappivanov.Weather
 
-interface WeatherRepository {
+fun interface RepositorySingle {
     fun getWeather(lat: Double, lon: Double): Weather
-    fun getListWeather(): List<Weather>
+}
+
+fun interface RepositoryMulti {
+    fun getListWeather(location: Location): List<Weather>
+}
+
+sealed class Location{
+    object Russia: Location()
+    object World: Location()
 }

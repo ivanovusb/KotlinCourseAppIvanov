@@ -1,15 +1,20 @@
 package com.example.kotlincourseappivanov.model
 
-import com.example.kotlincourseappivanov.City
-import com.example.kotlincourseappivanov.Weather
-import com.example.kotlincourseappivanov.getDefaultCity
+import com.example.kotlincourseappivanov.*
 
-class WeatherRepositoryLocal:WeatherRepository {
-    override fun getWeather(lat: Double, lon: Double): Weather {
-        return Weather(getDefaultCity(), -20, +20)
+class WeatherRepositoryLocal: RepositorySingle, RepositoryMulti {
+    override fun getListWeather(location: Location): List<Weather> {
+        return when (location) {
+            Location.Russia -> {
+                getRussianCities()
+            }
+            Location.World -> {
+                getWorldCities()
+            }
+        }
     }
 
-    override fun getListWeather(): List<Weather> {
-        return listOf(Weather(getDefaultCity(), -20, +20))
+    override fun getWeather(lat: Double, lon: Double): Weather {
+        return Weather()
     }
 }
