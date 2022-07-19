@@ -68,19 +68,35 @@ class WeatherFragmentList : Fragment(), OnItemClick {
 
     private fun renderData(appState: AppState) {
         when (appState) {
-            is AppState.Error -> {/*TODO() HW*/
+            is AppState.Error -> {
+                binding.showResult()
             }
-            AppState.Loading -> {/*TODO() HW*/
+            AppState.Loading -> {
+                binding.loading()
             }
             is AppState.SuccessSingle -> {
+                binding.showResult()
                 val result = appState.weatherData
-
             }
             is AppState.SuccessMulti -> {
+                binding.showResult()
+
                 binding.weatherListFragmentRecyclerView.adapter =
                     WeatherListAdapter(appState.weatherList, this)
             }
         }
+    }
+
+    fun WeatherFragmentListBinding.loading() {
+        binding.weatherListFragmentFAB.visibility = View.GONE
+        binding.mainFragmentLoadingLayout.visibility = View.VISIBLE
+
+    }
+
+    fun WeatherFragmentListBinding.showResult() {
+        binding.weatherListFragmentFAB.visibility = View.VISIBLE
+        binding.mainFragmentLoadingLayout.visibility = View.GONE
+
     }
 
     override fun onItemClick(weather: Weather) {

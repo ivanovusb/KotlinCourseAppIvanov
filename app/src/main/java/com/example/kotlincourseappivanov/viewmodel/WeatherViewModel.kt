@@ -44,12 +44,16 @@ class WeatherViewModel(private val liveData: MutableLiveData<AppState> = Mutable
 
     private fun sentRequest(location: Location) {
         liveData.value = AppState.Loading
-        if (false) {
-            liveData.postValue(AppState.Error(IllegalStateException("что то пошло не так!")))
-        } else {
-            liveData.postValue(AppState.SuccessMulti(repositoryMulti.getListWeather(location)))
-        }
+        Thread {
+            Thread.sleep(3000L)
+            if (false) {
+                liveData.postValue(AppState.Error(IllegalStateException("что то пошло не так!")))
+            } else {
+                liveData.postValue(AppState.SuccessMulti(repositoryMulti.getListWeather(location)))
+            }
+        }.start()
     }
+
 
     private fun isConnection(): Boolean {
         return false
