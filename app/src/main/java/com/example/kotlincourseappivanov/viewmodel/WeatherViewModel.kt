@@ -8,12 +8,12 @@ import java.security.SecureRandom
 class WeatherViewModel(private val liveData: MutableLiveData<AppState> = MutableLiveData<AppState>()) :
     ViewModel() {
 
-/*
+
     private fun getRandomState(one: Int = 1, zero: Int = 0): Boolean {
         val random = SecureRandom()
         random.setSeed(random.generateSeed(20))
         return (random.nextInt(one - zero + 1) + zero) == 1
-    }*/
+    }
 
     private lateinit var repositorySingle: RepositorySingle
     private lateinit var repositoryMulti: RepositoryMulti
@@ -46,7 +46,7 @@ class WeatherViewModel(private val liveData: MutableLiveData<AppState> = Mutable
         liveData.value = AppState.Loading
         Thread {
             Thread.sleep(3000L)
-            if (false) {
+            if (getRandomState()) {
                 liveData.postValue(AppState.Error(IllegalStateException("что то пошло не так!")))
             } else {
                 liveData.postValue(AppState.SuccessMulti(repositoryMulti.getListWeather(location)))

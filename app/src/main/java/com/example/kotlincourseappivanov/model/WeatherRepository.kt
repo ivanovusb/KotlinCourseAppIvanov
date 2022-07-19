@@ -10,7 +10,7 @@ fun interface RepositoryMulti {
     fun getListWeather(location: Location): List<Weather>
 }
 
-sealed class Location{
-    object Russia: Location()
-    object World: Location()
+sealed class Location {
+    object Russia : Location()
+    object World : Location()
 }

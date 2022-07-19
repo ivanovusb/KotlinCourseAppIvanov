@@ -12,6 +12,7 @@ import com.example.kotlincourseappivanov.Weather
 import com.example.kotlincourseappivanov.databinding.WeatherFragmentListBinding
 import com.example.kotlincourseappivanov.viewmodel.AppState
 import com.example.kotlincourseappivanov.viewmodel.WeatherViewModel
+import com.google.android.material.snackbar.Snackbar
 
 class WeatherFragmentList : Fragment(), OnItemClick {
 
@@ -69,17 +70,24 @@ class WeatherFragmentList : Fragment(), OnItemClick {
     private fun renderData(appState: AppState) {
         when (appState) {
             is AppState.Error -> {
-                binding.showResult()
+                showResult()
+                binding.root.showSnack("Ошибка загрузки", Snackbar.LENGTH_LONG, "Перезапустить ?") {
+                    if (isRussian) {
+                        viewModel.getWeatherListForRussia()
+                    } else {
+                        viewModel.getWeatherListForWorld()
+                    }
+                }
             }
             AppState.Loading -> {
-                binding.loading()
+                loading()
             }
             is AppState.SuccessSingle -> {
-                binding.showResult()
+                showResult()
                 val result = appState.weatherData
             }
             is AppState.SuccessMulti -> {
-                binding.showResult()
+                showResult()
 
                 binding.weatherListFragmentRecyclerView.adapter =
                     WeatherListAdapter(appState.weatherList, this)
@@ -87,13 +95,22 @@ class WeatherFragmentList : Fragment(), OnItemClick {
         }
     }
 
-    fun WeatherFragmentListBinding.loading() {
+    private fun View.showSnack(
+        message: String,
+        duration: Int,
+        messageAction: String,
+        block: (v: View) -> Unit
+    ) {
+        Snackbar.make(this, message, duration).setAction(messageAction, block).show()
+    }
+
+    private fun loading() {
         binding.weatherListFragmentFAB.visibility = View.GONE
         binding.mainFragmentLoadingLayout.visibility = View.VISIBLE
 
     }
 
-    fun WeatherFragmentListBinding.showResult() {
+    private fun showResult() {
         binding.weatherListFragmentFAB.visibility = View.VISIBLE
         binding.mainFragmentLoadingLayout.visibility = View.GONE
 
