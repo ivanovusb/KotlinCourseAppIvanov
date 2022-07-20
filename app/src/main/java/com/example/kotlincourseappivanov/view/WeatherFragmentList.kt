@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.kotlincourseappivanov.R
 import com.example.kotlincourseappivanov.Weather
@@ -26,9 +25,9 @@ class WeatherFragmentList : Fragment(), OnItemClick {
             return _binding!!
         }
 
-    var isRussian = true
+    private var isRussian: Boolean = true
 
-    lateinit var viewModel: WeatherViewModel
+    private lateinit var viewModel: WeatherViewModel
 
     override fun onDestroy() {
         super.onDestroy()
@@ -48,11 +47,8 @@ class WeatherFragmentList : Fragment(), OnItemClick {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProvider(this).get(WeatherViewModel::class.java)
-        viewModel.getLiveData().observe(viewLifecycleOwner, object : Observer<AppState> {
-            override fun onChanged(t: AppState) {
-                renderData(t)
-            }
-        })
+        viewModel.getLiveData().observe(viewLifecycleOwner
+        ) { t -> renderData(t) }
 
         binding.weatherListFragmentFAB.setOnClickListener {
             isRussian = !isRussian
