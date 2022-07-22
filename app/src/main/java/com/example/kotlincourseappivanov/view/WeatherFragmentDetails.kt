@@ -47,7 +47,7 @@ class WeatherFragmentDetails : Fragment() {
             WeatherLoader.requestWeather(
                 weatherLocal.city.lat,
                 weatherLocal.city.lon
-            ) {weatherDTO ->
+            ) { weatherDTO ->
                 bindWeatherLocalWithWeatherDTO(weatherLocal, weatherDTO)
             }
         }

@@ -47,7 +47,8 @@ class WeatherFragmentList : Fragment(), OnItemClick {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProvider(this).get(WeatherViewModel::class.java)
-        viewModel.getLiveData().observe(viewLifecycleOwner
+        viewModel.getLiveData().observe(
+            viewLifecycleOwner
         ) { t -> renderData(t) }
 
         binding.weatherListFragmentFAB.setOnClickListener {
