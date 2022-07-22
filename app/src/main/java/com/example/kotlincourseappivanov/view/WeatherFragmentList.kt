@@ -5,13 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.kotlincourseappivanov.R
 import com.example.kotlincourseappivanov.Weather
 import com.example.kotlincourseappivanov.databinding.WeatherFragmentListBinding
 import com.example.kotlincourseappivanov.viewmodel.AppState
 import com.example.kotlincourseappivanov.viewmodel.WeatherViewModel
+import com.google.android.material.snackbar.Snackbar
 
 class WeatherFragmentList : Fragment(), OnItemClick {
 
@@ -25,9 +25,9 @@ class WeatherFragmentList : Fragment(), OnItemClick {
             return _binding!!
         }
 
-    var isRussian = true
+    private var isRussian: Boolean = true
 
-    lateinit var viewModel: WeatherViewModel
+    private lateinit var viewModel: WeatherViewModel
 
     override fun onDestroy() {
         super.onDestroy()
@@ -47,11 +47,9 @@ class WeatherFragmentList : Fragment(), OnItemClick {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProvider(this).get(WeatherViewModel::class.java)
-        viewModel.getLiveData().observe(viewLifecycleOwner, object : Observer<AppState> {
-            override fun onChanged(t: AppState) {
-                renderData(t)
-            }
-        })
+        viewModel.getLiveData().observe(
+            viewLifecycleOwner
+        ) { t -> renderData(t) }
 
         binding.weatherListFragmentFAB.setOnClickListener {
             isRussian = !isRussian
@@ -68,19 +66,51 @@ class WeatherFragmentList : Fragment(), OnItemClick {
 
     private fun renderData(appState: AppState) {
         when (appState) {
-            is AppState.Error -> {/*TODO() HW*/
+            is AppState.Error -> {
+                showResult()
+                binding.root.showSnack("Ошибка загрузки", Snackbar.LENGTH_LONG, "Перезапустить ?") {
+                    if (isRussian) {
+                        viewModel.getWeatherListForRussia()
+                    } else {
+                        viewModel.getWeatherListForWorld()
+                    }
+                }
             }
-            AppState.Loading -> {/*TODO() HW*/
+            AppState.Loading -> {
+                loading()
             }
             is AppState.SuccessSingle -> {
+                showResult()
                 val result = appState.weatherData
-
             }
             is AppState.SuccessMulti -> {
+                showResult()
+
                 binding.weatherListFragmentRecyclerView.adapter =
                     WeatherListAdapter(appState.weatherList, this)
             }
         }
+    }
+
+    private fun View.showSnack(
+        message: String,
+        duration: Int,
+        messageAction: String,
+        block: (v: View) -> Unit
+    ) {
+        Snackbar.make(this, message, duration).setAction(messageAction, block).show()
+    }
+
+    private fun loading() {
+        binding.weatherListFragmentFAB.visibility = View.GONE
+        binding.mainFragmentLoadingLayout.visibility = View.VISIBLE
+
+    }
+
+    private fun showResult() {
+        binding.weatherListFragmentFAB.visibility = View.VISIBLE
+        binding.mainFragmentLoadingLayout.visibility = View.GONE
+
     }
 
     override fun onItemClick(weather: Weather) {

@@ -2,7 +2,7 @@ package com.example.kotlincourseappivanov.model
 
 import com.example.kotlincourseappivanov.*
 
-class WeatherRepositoryLocal: RepositorySingle, RepositoryMulti {
+class WeatherRepositoryLocal : RepositorySingle, RepositoryMulti {
     override fun getListWeather(location: Location): List<Weather> {
         return when (location) {
             Location.Russia -> {
