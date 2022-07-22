@@ -45,7 +45,7 @@ class WeatherViewModel(private val liveData: MutableLiveData<AppState> = Mutable
     private fun sentRequest(location: Location) {
         liveData.value = AppState.Loading
         Thread {
-            Thread.sleep(3000L)
+            Thread.sleep(300L)
             if (getRandomState()) {
                 liveData.postValue(AppState.Error(IllegalStateException("что то пошло не так!")))
             } else {
